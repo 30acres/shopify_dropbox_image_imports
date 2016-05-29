@@ -2,8 +2,8 @@ require 'net/http'
 require 'dropbox_sdk'
 
 module ImageImports
-  require "product/product"
   class ImportImage
+    require "product/product"
     def initialize(product,path,token)
       @product = product
       @path = path

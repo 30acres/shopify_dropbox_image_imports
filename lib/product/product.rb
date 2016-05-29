@@ -1,5 +1,5 @@
 module ImageImports
-  class Product
+  module Product
     def self.all_products_array(params={})
       p_arr = []
       find_params = { limit: limit }.merge(params)
