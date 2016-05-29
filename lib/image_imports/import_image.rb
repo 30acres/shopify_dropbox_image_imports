@@ -32,16 +32,12 @@ class ImportImage
     DropboxClient.new(@token)
   end
 
-  def number_to_check
-    [0,1,2,3,4,5,6,7,8,10]
-  end
-
   def has_dropbox_images
     if dropbox_images.any?
-      puts 'Found match'
+      puts "Found match (#{@product.title})"
       match = true
     else
-      puts 'No match'
+      puts "No match (#{@product.title})"
       match = false
     end
     match
