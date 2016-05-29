@@ -2,6 +2,7 @@ require 'net/http'
 require 'dropbox_sdk'
 
 module ImageImports
+  require "product/product"
   class ImportImage
     def initialize(product,path,token)
       @product = product
@@ -11,7 +12,7 @@ module ImageImports
 
     def self.process_all_images(path, token)
       if path and token
-        ImageImports::Product.all_products_array.each do |page|
+        Product.all_products_array.each do |page|
           page.each do |product|
             ImportImage.new(product,path,token).update_images
           end
