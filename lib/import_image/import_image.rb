@@ -11,7 +11,7 @@ module ImageImports
 
     def self.process_all_images(path, token)
       if path and token
-        Product.all_products_array.each do |page|
+        ImageImports::Product.all_products_array.each do |page|
           page.each do |product|
             ImportImage.new(product,path,token).update_images
           end
