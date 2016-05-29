@@ -3,8 +3,8 @@ require "image_imports/version"
 
 
 module ImageImports
-  require "product/product"
-  require "import_image/import_image"
+  require "image_imports/product"
+  require "image_imports/import_image"
 
   def self.update_all_products(path=nil, token=nil)
     ImageImports.process_all_images(path,token)
