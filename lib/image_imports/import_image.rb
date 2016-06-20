@@ -15,13 +15,14 @@ module ImageImports
     if path and token
       ImageImports::Product.all_products_array.each do |page|
         page.each do |product|
-          puts "Processing Product: #{product.title}"
+          puts "======== Processing Product: #{product.title} ============"
           if product.images.count >= 2
             puts "Skipping:: #{product.title}"
           else
             puts "Processing:: #{product.title}"
             ImportImage.new(product,path,token).update_images
           end
+          puts "=========================================================="
         end
       end
     end

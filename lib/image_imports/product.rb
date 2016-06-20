@@ -15,7 +15,7 @@ module ImageImports
   end
 
   def self.pages
-    count/limit
+    count/limit + 1
   end
 
   def self.limit
