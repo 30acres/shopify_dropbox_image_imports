@@ -15,7 +15,9 @@ module ImageImports
     if path and token
       ImageImports::Product.all_products_array.each do |page|
         page.each do |product|
-          unless product.images.any?
+          if product.images.count <= 2
+            puts "Skipping, has image #{product.title}"
+          else
             ImportImage.new(product,path,token).update_images
           end
         end
