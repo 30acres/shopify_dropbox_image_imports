@@ -15,8 +15,9 @@ module ImageImports
     if path and token
       ImageImports::Product.all_products_array.each do |page|
         page.each do |product|
-          binding.pry
-          ImportImage.new(product,path,token).update_images
+          unless product.images.any?
+            ImportImage.new(product,path,token).update_images
+          end
         end
       end
     end
