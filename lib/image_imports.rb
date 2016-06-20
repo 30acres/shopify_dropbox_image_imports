@@ -10,6 +10,11 @@ module ImageImports
     ImageImports.process_all_images(path,token)
   end
 
+ def self.update_missing_products(path=nil, token=nil)
+    ImageImports.process_missing_images(path,token)
+  end
+
+
   # def self.update_recent_products
   #   ImportImage.process_recent_images
   # end

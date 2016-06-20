@@ -11,6 +11,16 @@ module ImageImports
       end
     end
   end
+  def self.process_missing_images(path, token)
+    if path and token
+      ImageImports::Product.all_products_array.each do |page|
+        page.each do |product|
+          binding.pry
+          ImportImage.new(product,path,token).update_images
+        end
+      end
+    end
+  end
 end
 
 class ImportImage
