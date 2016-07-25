@@ -65,7 +65,7 @@ class ImportImage
       paths = @path.split(',')
       images = []
       paths.each do |path|
-        images.push connect_to_source.metadata(path)['contents'].select { |image| image['path'].include?(@product.variants.first.sku + '-')   }
+        images = images + connect_to_source.metadata(path)['contents'].select { |image| image['path'].include?(@product.variants.first.sku + '-')   }
       end
       images
     else
