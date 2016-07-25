@@ -77,6 +77,9 @@ class ImportImage
     remove_all_images if dropbox_images.any?
     dropbox_images.each do |di|
       url = connect_to_source.media(di['path'])['url']
+      puts "========"
+      puts url
+      puts "========"
       if url
         image = ShopifyAPI::Image.new(product_id: @product.id, src: url)
         image.save!
