@@ -61,8 +61,13 @@ class ImportImage
 
   def dropbox_images
     if @product.variants.any? and @product.variants.first.sku.length >= 5 ## Just to make sure its not an accident
-      binding.pry
-      connect_to_source.metadata(@path)['contents'].select { |image| image['path'].include?(@product.variants.first.sku + '-')   }
+      # binding.pry
+      paths = @path.split(',')
+      images = []
+      paths.each do |path|
+        images.push connect_to_source.metadata(path)['contents'].select { |image| image['path'].include?(@product.variants.first.sku + '-')   }
+      end
+      images
     else
       []
     end
