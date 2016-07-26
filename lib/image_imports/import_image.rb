@@ -70,6 +70,7 @@ class ImportImage
       images
     else
       []
+      #['http://www.endlessicons.com/wp-content/uploads/2013/10/clothes-hanger-icon.png']
     end
   end
 
