@@ -13,8 +13,8 @@ module ImageImports
   end
   def self.process_missing_images(path, token)
     if path and token
-      ImageImports::Product.all_products_array.each_with_index do |page, index|
-        page.each do |product|
+      ImageImports::Product.all_products_array.each do |page|
+        page.each_with_index do |product,index|
           puts "======== Processing Product: #{index}: #{product.title} ============"
           if product.images.count >= 2
             puts "Skipping:: #{product.title}"
