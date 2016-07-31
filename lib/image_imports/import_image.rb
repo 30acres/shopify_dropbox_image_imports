@@ -77,7 +77,9 @@ class ImportImage
   def upload_images
     remove_all_images if dropbox_images.any?
     dropbox_images.each do |di|
+
       url = connect_to_source.media(di['path'])['url']
+      binding.pry
       puts "========"
       puts url
       puts "========"
