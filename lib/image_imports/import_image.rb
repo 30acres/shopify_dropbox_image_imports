@@ -2,6 +2,8 @@ require 'net/http'
 require 'dropbox_sdk'
 require "product/product"
 require "fastimage"
+require 'slack-notifier'
+
 module ImageImports
   def self.process_all_images(path, token)
     if path and token
@@ -35,6 +37,8 @@ class ImportImage
     @product = product
     @path = path
     @token = token
+    @notifier = Slack::Notifier.new ENV['SLACK_IMAGE_WEBHOOK'], channel: '#image_imports',
+                                              username: 'notifier'
   end
 
   def update_images
@@ -91,11 +95,15 @@ class ImportImage
           image.save!
         else
           puts 'IMAGE TOO BIG!'
+          
+          @notifier.ping "Failed Image Import: #{url}"
+          
           failed << url
         end
       end
     end
     puts '----------------------'
+    puts '--- FAILED SO FAR ----'
     puts failed.count
     puts failed
     puts '----------------------'
