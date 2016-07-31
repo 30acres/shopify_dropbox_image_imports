@@ -1,6 +1,7 @@
 require 'net/http'
 require 'dropbox_sdk'
 require "product/product"
+require "fastimage"
 module ImageImports
   def self.process_all_images(path, token)
     if path and token

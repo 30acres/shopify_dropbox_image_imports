@@ -30,5 +30,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "minitest", "~> 5.0"
   spec.add_development_dependency "shopify_api"
+  spec.add_runtime_dependency "fastimage"
   spec.add_runtime_dependency "dropbox-sdk"
 end
