@@ -77,6 +77,7 @@ class ImportImage
 
   def upload_images
     remove_all_images if dropbox_images.any?
+    failed = []
     dropbox_images.each do |di|
 
       url = connect_to_source.media(di['path'])['url']
@@ -85,10 +86,19 @@ class ImportImage
       puts url
       puts "========"
       if url
-        image = ShopifyAPI::Image.new(product_id: @product.id, src: url)
-        image.save!
+        if FastImage.size(url).inject(:*) <= 19999999
+          image = ShopifyAPI::Image.new(product_id: @product.id, src: url)
+          image.save!
+        else
+          puts 'IMAGE TOO BIG!'
+          failed << url
+        end
       end
     end
+    puts '----------------------'
+    puts failed.count
+    puts failed
+    puts '----------------------'
   end
 
   def remove_all_images
