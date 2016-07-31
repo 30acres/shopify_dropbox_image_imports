@@ -81,7 +81,7 @@ class ImportImage
     dropbox_images.each do |di|
 
       url = connect_to_source.media(di['path'])['url']
-      binding.pry
+      # binding.pry
       puts "========"
       puts url
       puts "========"
