@@ -90,7 +90,7 @@ class ImportImage
       puts url
       puts "========"
       if url
-        if FastImage.size(url).inject(:*) <= 19999999
+        if FastImage.size(url) and FastImage.size(url).inject(:*) <= 19999999
           image = ShopifyAPI::Image.new(product_id: @product.id, src: url)
           image.save!
         else
