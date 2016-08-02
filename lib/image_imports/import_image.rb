@@ -118,7 +118,7 @@ class ImportImage
     ## reload the product heres
     @product = ShopifyAPI::Product.find(@product.id)
     @product.tags = @product.tags + ", #{tagged}"
-    @notifier.ping "Image Import [#{tagged}]: #{@product.title} Img: #{url}"
+    @notifier.ping "Image Import [#{tagged}]: #{@product.title}"
     @product.save!
   end
 
