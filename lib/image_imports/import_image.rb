@@ -93,9 +93,9 @@ class ImportImage
       if url
         if FastImage.size(url) and FastImage.size(url).inject(:*) <= 19999999
           @product.tags = @product.tags + ', image-processed'
+          @product.save
           image = ShopifyAPI::Image.new(product_id: @product.id, src: url)
-          image.save!
-          @product.save!
+          image.save
         else
           puts 'IMAGE TOO BIG!'
           
@@ -106,9 +106,9 @@ class ImportImage
       end
     end
     puts '----------------------'
+    puts failed
     puts '--- FAILED SO FAR ----'
     puts failed.count
-    puts failed
     puts '----------------------'
   end
 
