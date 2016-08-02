@@ -37,8 +37,8 @@ class ImportImage
     @product = product
     @path = path
     @token = token
-    @notifier = Slack::Notifier.new ENV['SLACK_IMAGE_WEBHOOK'], channel: '#image_imports',
-      username: 'notifier'
+    @notifier = Slack::Notifier.new ENV['SLACK_IMAGE_WEBHOOK'], channel: '#product_data_feed',
+      username: 'Image Notifier', icon: 'https://cdn.shopify.com/s/files/1/1290/9713/t/4/assets/favicon.png?3454692878987139175'
   end
 
   def update_images
