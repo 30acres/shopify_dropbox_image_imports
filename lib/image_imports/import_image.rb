@@ -18,7 +18,7 @@ module ImageImports
     if path and token
       ImageImports::Product.all_products_array.each do |page|
         page.each_with_index do |product,index|
-          puts "======== Processing Product: #{index}: #{product.title} ============"
+          puts "======== Processing Product: #{index + 1}: #{product.title} ============"
           if product.tags.include?('image-processed')
             puts "Skipping:: #{product.title}"
           else
@@ -58,7 +58,7 @@ class ImportImage
       puts "Found match (#{@product.title})"
       match = true
     else
-      puts "No match (#{@product.title})"
+      puts "No matching image in Dropbox for added products (#{@product.title})"
       @notifier.ping "Image Import: No match (#{@product.title})"
       match = false
     end
