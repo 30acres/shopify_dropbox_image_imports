@@ -19,7 +19,7 @@ module ImageImports
       ImageImports::Product.all_products_array.each do |page|
         page.each_with_index do |product,index|
           puts "======== Processing Product: #{index}: #{product.title} ============"
-          if product.images.count >= 2
+          if product.images.count >= 2 or product.tags.include?('image-processed')
             puts "Skipping:: #{product.title}"
           else
             puts "Processing:: #{product.title}"
@@ -59,6 +59,7 @@ class ImportImage
       match = true
     else
       puts "No match (#{@product.title})"
+      @notifier.ping "No match (#{@product.title})"
       match = false
     end
     match
@@ -91,12 +92,14 @@ class ImportImage
       puts "========"
       if url
         if FastImage.size(url) and FastImage.size(url).inject(:*) <= 19999999
+          @product.tags = @product.tags + ', image-processed'
           image = ShopifyAPI::Image.new(product_id: @product.id, src: url)
           image.save!
+          @product.save!
         else
           puts 'IMAGE TOO BIG!'
           
-          @notifier.ping "Failed Image Import: #{url}"
+          @notifier.ping "Failed Image Import: #{@product.title} Img: #{url}"
           
           failed << url
         end

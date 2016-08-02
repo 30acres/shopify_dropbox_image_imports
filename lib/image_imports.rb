@@ -7,6 +7,9 @@ module ImageImports
   require "image_imports/import_image"
 
   def self.update_all_products(path=nil, token=nil)
+    puts '----------------------------------------------------'
+    puts '|  To reprocess images remove tag: image-processed  |'
+    puts '----------------------------------------------------'
     ImageImports.process_all_images(path,token)
   end
 
