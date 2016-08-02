@@ -19,7 +19,7 @@ module ImageImports
       ImageImports::Product.all_products_array.each do |page|
         page.each_with_index do |product,index|
           puts "======== Processing Product: #{index}: #{product.title} ============"
-          if product.images.count >= 2 or product.tags.include?('image-processed')
+          if product.tags.include?('image-processed')
             puts "Skipping:: #{product.title}"
           else
             puts "Processing:: #{product.title}"
@@ -59,7 +59,7 @@ class ImportImage
       match = true
     else
       puts "No match (#{@product.title})"
-      @notifier.ping "No match (#{@product.title})"
+      @notifier.ping "Image Import: No match (#{@product.title})"
       match = false
     end
     match
@@ -98,7 +98,7 @@ class ImportImage
         else
           puts 'IMAGE TOO BIG!'
           tagged = 'image-failed'
-          @notifier.ping "Failed Image Import: #{@product.title} Img: #{url}"
+          @notifier.ping "Image Import [FAILED]: #{@product.title}\n Img: #{url}"
 
           failed << url
         end
