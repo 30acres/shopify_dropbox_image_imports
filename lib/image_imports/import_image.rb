@@ -115,6 +115,8 @@ class ImportImage
   end
 
   def update_image_tags(tagged)
+    ## reload the product here
+    @product = ShopifyAPI::Product.find(@product.id)
     @product.tags = @product.tags + ", #{tagged}"
     @product.save!
   end
