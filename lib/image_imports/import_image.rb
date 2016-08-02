@@ -83,7 +83,9 @@ class ImportImage
   def upload_images
     remove_all_images if dropbox_images.any?
     failed = []
+ 
     dropbox_images.each do |di|
+      tagged = 'image-checked'
 
       url = connect_to_source.media(di['path'])['url']
       # binding.pry
@@ -103,9 +105,10 @@ class ImportImage
           failed << url
         end
       end
+      @product.tags = @product.tags + ", #{tagged}"
+      @product.save
     end
-    @product.tags = @product.tags + ", #{tagged}"
-    @product.save
+    
     puts '----------------------'
     puts failed
     puts '--- FAILED SO FAR ----'
