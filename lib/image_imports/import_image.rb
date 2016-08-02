@@ -55,10 +55,10 @@ class ImportImage
 
   def has_dropbox_images
     if dropbox_images.any?
-      puts "Found match (#{@product.title})"
+      puts "Image Import: Found Dropbox Match: (#{@product.title})"
       match = true
     else
-      puts "No matching image in Dropbox for added products (#{@product.title})"
+      puts "No matching image in Dropbox for added product: (#{@product.title})"
       @notifier.ping "Image Import: No match (#{@product.title})"
       match = false
     end
