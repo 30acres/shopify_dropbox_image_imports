@@ -115,7 +115,7 @@ class ImportImage
   end
 
   def update_image_tags(tagged)
-    ## reload the product here
+    ## reload the product heres
     @product = ShopifyAPI::Product.find(@product.id)
     @product.tags = @product.tags + ", #{tagged}"
     @notifier.ping "Image Import [#{tagged}]: #{@product.title} Img: #{url}"
