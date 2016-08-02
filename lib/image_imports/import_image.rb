@@ -38,7 +38,7 @@ class ImportImage
     @path = path
     @token = token
     @notifier = Slack::Notifier.new ENV['SLACK_IMAGE_WEBHOOK'], channel: '#image_imports',
-                                              username: 'notifier'
+      username: 'notifier'
   end
 
   def update_images
@@ -83,10 +83,8 @@ class ImportImage
   def upload_images
     remove_all_images if dropbox_images.any?
     failed = []
- 
+    tagged = 'image-checked'
     dropbox_images.each do |di|
-      tagged = 'image-checked'
-
       url = connect_to_source.media(di['path'])['url']
       # binding.pry
       puts "========"
@@ -98,22 +96,27 @@ class ImportImage
           tagged = 'image-processed'
           image.save!
         else
-          tagged = 'image-failed'
           puts 'IMAGE TOO BIG!'
+          tagged = 'image-failed'
           @notifier.ping "Failed Image Import: #{@product.title} Img: #{url}"
-          
+
           failed << url
         end
       end
-      @product.tags = @product.tags + ", #{tagged}"
-      @product.save
     end
-    
+
+    update_image_tags(tagged)
+
     puts '----------------------'
     puts failed
     puts '--- FAILED SO FAR ----'
     puts failed.count
     puts '----------------------'
+  end
+
+  def update_image_tags(tagged)
+    @product.tags = @product.tags + ", #{tagged}"
+    @product.save!
   end
 
   def remove_all_images
