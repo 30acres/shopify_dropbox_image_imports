@@ -15,11 +15,14 @@ module ImageImports
     end
   end
   def self.process_missing_images(path, token)
+    @notifier = Slack::Notifier.new ENV['SLACK_IMAGE_WEBHOOK'], channel: '#product_data_feed',
+      username: 'Image Notifier', icon_url: 'https://cdn.shopify.com/s/files/1/1290/9713/t/4/assets/favicon.png?3454692878987139175'
+    @notifier.ping "[Image Import] Process Started"
     if path and token
       ImageImports::Product.all_products_array.each do |page|
         page.each_with_index do |product,index|
           puts "======== Processing Product: #{index + 1}: #{product.title} ============"
-          if product.images.count >= 2 and product.tags.include?('image-processed')
+          if product.images.count >= 2
             puts "Skipping:: #{product.title}"
           else
             puts "Processing:: #{product.title}"
@@ -29,6 +32,7 @@ module ImageImports
         end
       end
     end
+    @notifier.ping "[Image Import] Process Finished"
   end
 end
 
@@ -48,14 +52,13 @@ class ImportImage
   end
 
   def connect_to_source
-    # w = DropboxOAuth2FlowNoRedirect.new(APP_KEY, APP_SECRET)
+    # w = DropboxOAuth2FlowNoRedirect.new(APP_KEY, APP_SECRET) 
     # authorize_url = flow.start()
     DropboxClient.new(@token)
   end
 
   def has_dropbox_images
     if dropbox_images.any?
-      puts "Image Import: Found Dropbox Match: (#{@product.title})"
       match = true
     else
       puts "No matching image in Dropbox for added product: (#{@product.title})"
