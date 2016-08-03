@@ -95,6 +95,7 @@ class ImportImage
         if FastImage.size(url) and FastImage.size(url).inject(:*) <= 19999999
           image = ShopifyAPI::Image.new(product_id: @product.id, src: url)
           tagged = 'image-processed'
+          # @notifier.ping "Image Import [#{tagged}]: #{@product.title}"
           image.save!
         else
           puts 'IMAGE TOO BIG!'
@@ -114,6 +115,7 @@ class ImportImage
     puts failed
     puts '--- FAILED SO FAR ----'
     puts failed.count
+    @notifier.ping "Image Import Complete :: #{dropbox_images.count} Found / #{failed.count} Failed"
     puts '----------------------'
   end
 
@@ -121,7 +123,6 @@ class ImportImage
     ## reload the product heres
     @product = ShopifyAPI::Product.find(@product.id)
     @product.tags = @product.tags + ", #{tagged}"
-    @notifier.ping "Image Import [#{tagged}]: #{@product.title}"
     @product.save!
   end
 
