@@ -38,7 +38,7 @@ class ImportImage
     @path = path
     @token = token
     @notifier = Slack::Notifier.new ENV['SLACK_IMAGE_WEBHOOK'], channel: '#product_data_feed',
-      username: 'Image Notifier', icon: 'https://cdn.shopify.com/s/files/1/1290/9713/t/4/assets/favicon.png?3454692878987139175'
+      username: 'Image Notifier', icon_url: 'https://cdn.shopify.com/s/files/1/1290/9713/t/4/assets/favicon.png?3454692878987139175'
   end
 
   def update_images
@@ -97,6 +97,8 @@ class ImportImage
         else
           puts 'IMAGE TOO BIG!'
           tagged = 'image-failed'
+          @notifier = Slack::Notifier.new ENV['SLACK_IMAGE_WEBHOOK'], channel: '#data_alerts',
+      username: 'Data Notifier', icon_url: 'https://cdn.shopify.com/s/files/1/1290/9713/t/4/assets/favicon.png?3454692878987139175'
           @notifier.ping "Image Import [FAILED]: #{@product.title}\n Img: #{url}"
 
           failed << url
