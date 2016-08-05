@@ -65,7 +65,6 @@ class ImportImage
 
   def dropbox_images
     if @product.variants.any? and @product.variants.first.sku.length >= 5 ## Just to make sure its not an accident
-      # binding.pry
       paths = @path.split(',')
       images = []
       paths.each do |path|
