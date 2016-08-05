@@ -22,13 +22,7 @@ module ImageImports
       ImageImports::Product.all_products_array.each do |page|
         page.each_with_index do |product,index|
           puts "======== Processing Product: #{index + 1}: #{product.title} ============"
-          binding.pry
-          if product.images.count >= 2
-            puts "Skipping:: #{product.title}"
-          else
-            puts "Processing:: #{product.title}"
-            ImportImage.new(product,path,token).update_images
-          end
+          ImportImage.new(product,path,token).update_images
           puts "=========================================================="
         end
       end
@@ -59,6 +53,7 @@ class ImportImage
   end
 
   def has_dropbox_images
+    binding.pry
     if dropbox_images.any?
       match = true
     else
