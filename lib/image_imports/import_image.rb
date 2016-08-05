@@ -53,8 +53,7 @@ class ImportImage
   end
 
   def has_dropbox_images
-    binding.pry
-    if dropbox_images.any?
+    if dropbox_images.any? and dropbox_images.count != @product.images.count
       match = true
     else
       puts "No matching image in Dropbox for added product: (#{@product.title})"
