@@ -22,6 +22,7 @@ module ImageImports
       ImageImports::Product.all_products_array.each do |page|
         page.each_with_index do |product,index|
           puts "======== Processing Product: #{index + 1}: #{product.title} ============"
+          binding.pry
           if product.images.count >= 2
             puts "Skipping:: #{product.title}"
           else

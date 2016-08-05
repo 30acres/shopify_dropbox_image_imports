@@ -18,8 +18,4 @@ module ImageImports
   end
 
 
-  # def self.update_recent_products
-  #   ImportImage.process_recent_images
-  # end
-
 end
