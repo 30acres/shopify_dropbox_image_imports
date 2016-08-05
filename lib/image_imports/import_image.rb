@@ -109,7 +109,7 @@ class ImportImage
       end
     end
 
-    if ShopifyAPI.credit_left <= 39
+    if ShopifyAPI.credit_used >= 38
       sleep(20)
     end
     update_image_tags(tagged)
