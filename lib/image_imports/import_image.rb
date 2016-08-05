@@ -53,7 +53,10 @@ class ImportImage
   end
 
   def has_dropbox_images
-    if dropbox_images.any? and dropbox_images.count != @product.images.count
+    if dropbox_images.any? 
+      if dropbox_images.count != @product.images.count
+        puts "Images Updated (#{@product.title})"
+      end
       match = true
     else
       puts "No matching image in Dropbox for added product: (#{@product.title})"
@@ -90,6 +93,9 @@ class ImportImage
           image = ShopifyAPI::Image.new(product_id: @product.id, src: url)
           tagged = 'image-processed'
           # @notifier.ping "Image Import [#{tagged}]: #{@product.title}"
+          if ShopifyAPI.credit_left <= 39
+            sleep(20)
+          end
           image.save!
         else
           puts 'IMAGE TOO BIG!'
@@ -103,6 +109,9 @@ class ImportImage
       end
     end
 
+    if ShopifyAPI.credit_left <= 39
+      sleep(20)
+    end
     update_image_tags(tagged)
 
     puts '----------------------'
