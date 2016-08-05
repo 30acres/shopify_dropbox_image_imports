@@ -56,6 +56,7 @@ class ImportImage
     if dropbox_images.any? 
       if dropbox_images.count != @product.images.count
         puts "Images Updated (#{@product.title})"
+        @notifier.ping "Image Updated (#{@product.title})"
         match = true
       end
       match = false
