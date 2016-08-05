@@ -56,10 +56,11 @@ class ImportImage
     if dropbox_images.any? 
       if dropbox_images.count != @product.images.count
         puts "Images Updated (#{@product.title})"
+        match = true
       end
-      match = true
+      match = false
     else
-      puts "No matching image in Dropbox for added product: (#{@product.title})"
+      puts "No matching image in Dropbox for added product: (#{@product.title} - #{@product.published_at})"
       @notifier.ping "Image Import: No match (#{@product.title})"
       match = false
     end
@@ -110,6 +111,7 @@ class ImportImage
     end
 
     if ShopifyAPI.credit_used >= 38
+      puts 'WOAH! Slow down abuser.'
       sleep(20)
     end
     update_image_tags(tagged)
@@ -118,7 +120,7 @@ class ImportImage
     puts failed
     puts '--- FAILED SO FAR ----'
     puts failed.count
-    @notifier.ping "Image Import Complete :: #{dropbox_images.count} Found / #{failed.count} Failed"
+    @notifier.ping "Image Import Complete :: #{failed.count} Failed"
     puts '----------------------'
   end
 
