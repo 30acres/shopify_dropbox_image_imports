@@ -15,10 +15,10 @@ class DropboxImageImports::Crunch < DropboxImageImports::Source
   end
 
   def self.process_all
-    if @path and @token
+    if path and token
       DropboxImageImports::Product.all_products_array.each do |page|
         page.each do |product|
-          DropboxImageImports::Import.new(product,@path,@token).update_images
+          DropboxImageImports::Import.new(product,path,token).update_images
         end
       end
     end

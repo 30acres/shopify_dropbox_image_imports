@@ -6,7 +6,7 @@ require 'slack-notifier'
 
 class DropboxImageImports::Import < DropboxImageImports::Source
   def initialize(product)
-    @token = token
+    @product = product
   end
 
   def update_images
@@ -18,7 +18,7 @@ class DropboxImageImports::Import < DropboxImageImports::Source
   def connect_to_source
     # w = DropboxOAuth2FlowNoRedirect.new(APP_KEY, APP_SECRET) 
     # authorize_url = flow.start()
-    DropboxClient.new(@token)
+    DropboxClient.new(token)
   end
 
   def has_dropbox_images
@@ -39,7 +39,7 @@ class DropboxImageImports::Import < DropboxImageImports::Source
 
   def dropbox_images
     if @product.variants.any? and @product.variants.first.sku.length >= 5 ## Just to make sure its not an accident
-      paths = @path.split(',')
+      paths = path.split(',')
       images = []
       paths.each do |path|
         images = images + connect_to_source.metadata(path)['contents'].select { |image| image['path'].downcase.include?(@product.variants.first.sku.downcase + '-')   }
