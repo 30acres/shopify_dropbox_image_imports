@@ -2,7 +2,8 @@ require 'net/http'
 require 'dropbox_sdk'
 require "fastimage"
 
-class DropboxImageImports::Crunch < DropboxImageImports::Source
+class DropboxImageImports::Crunch
+  include DropboxImageImports::Source 
 
   def self.process_all_images
     DropboxImageImports::Notification.notify('Process Started')
