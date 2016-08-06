@@ -92,10 +92,10 @@ class DropboxImageImports::Import < DropboxImageImports::Source
 
   def reorder_images
     #reload the product and check on the images
+    puts 'GOT TO REORDER'
     @product = ShopifyAPI::Product.find(@product.id)
     @product.images.each do |img|
-      puts 'GOT HERE'
-      binding.pry
+      intended_position = img.src.split('-').last.split('.').first.gsub(/[^0-9,.]/,'').to_i + 1
       if intended_position != img.position
         img.position = intented_position
         DropboxImageImports::Notification.notify("Reordered: #{@product.title}")
