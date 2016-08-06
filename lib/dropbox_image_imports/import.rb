@@ -80,7 +80,7 @@ class DropboxImageImports::Import < DropboxImageImports::Source
       reorder_images
 
       if ShopifyAPI.credit_used >= 38
-        puts 'WOAH! Slow down abuser.'
+        puts 'WOAH! Slow down speedy.'
         DropboxImageImports::Notification.notify("Hit API Limit :: Having a 20 second nap")
         sleep(20)
         DropboxImageImports::Notification.notify("Nap done.")
