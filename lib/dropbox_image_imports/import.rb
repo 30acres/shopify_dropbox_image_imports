@@ -60,7 +60,8 @@ class DropboxImageImports::Import < DropboxImageImports::Source
       
       if url
         if FastImage.size(url) and FastImage.size(url).inject(:*) <= 19999999
-          image = ShopifyAPI::Image.new(product_id: @product.id, src: url)
+          intended_position = url.split('-').last.split('.').first.gsub(/[^0-9,.]/,'').to_i + 1
+          image = ShopifyAPI::Image.new(product_id: @product.id, src: url, position: intended_position)
           tagged = 'image-processed'
           if ShopifyAPI.credit_left <= 39
             puts 'Snoozed'
@@ -76,8 +77,6 @@ class DropboxImageImports::Import < DropboxImageImports::Source
           failed << url
         end
       end
-      update_image_tags(tagged)
-      reorder_images
 
       if ShopifyAPI.credit_used >= 38
         puts 'WOAH! Slow down speedy.'
@@ -88,20 +87,6 @@ class DropboxImageImports::Import < DropboxImageImports::Source
     end
 
     DropboxImageImports::Notification.notify("Import Complete")
-  end
-
-  def reorder_images
-    #reload the product and check on the images
-    puts 'GOT TO REORDER'
-    @product = ShopifyAPI::Product.find(@product.id)
-    @product.images.each do |img|
-      intended_position = img.src.split('-').last.split('.').first.gsub(/[^0-9,.]/,'').to_i + 1
-      if intended_position != img.position
-        img.position = intented_position
-        DropboxImageImports::Notification.notify("Reordered: #{@product.title}")
-      end
-    end
-    @product.save!
   end
 
   def update_image_tags(tagged)
