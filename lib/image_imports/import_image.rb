@@ -113,9 +113,12 @@ class ImportImage
 
     if ShopifyAPI.credit_used >= 38
       puts 'WOAH! Slow down abuser.'
+      @notifier.ping "Image Import API Limit :: Snoozing for 20 seconds"
       sleep(20)
     end
     update_image_tags(tagged)
+
+    reorder_images
 
     puts '----------------------'
     puts failed
@@ -123,6 +126,16 @@ class ImportImage
     puts failed.count
     @notifier.ping "Image Import Complete :: #{failed.count} Failed"
     puts '----------------------'
+  end
+
+  def reorder_images
+    @product.images.each do |img|
+      intended_position = img.src.split('-').last.split('.').first.gsub(/[^0-9,.]/,'').to_i + 1
+      if intended_position != img.position
+        img.position = intented_position
+        img.save!
+      end
+    end
   end
 
   def update_image_tags(tagged)
