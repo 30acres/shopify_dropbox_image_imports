@@ -2,7 +2,6 @@ class DropboxImageImports
   require 'dropbox_image_imports/source' 
   require 'dropbox_image_imports/product' 
   require 'dropbox_image_imports/import' 
-  require 'dropbox_image_imports/image' 
   require 'dropbox_image_imports/notification' 
   require 'dropbox_image_imports/crunch' 
 
@@ -19,7 +18,7 @@ class DropboxImageImports
  end
 
  def reorder_images
-   DropboxImageImports::Image.reorder_images
+   DropboxImageImports::Product.reorder_images
  end
 
 end
