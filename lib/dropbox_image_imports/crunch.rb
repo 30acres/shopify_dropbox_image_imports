@@ -2,12 +2,7 @@ require 'net/http'
 require 'dropbox_sdk'
 require "fastimage"
 
-class DropboxImageImports::Crunch
-
-  def initialize(path,token)
-    @path = path
-    @token = token
-  end
+class DropboxImageImports::Crunch  < DropboxImageImports::Source
 
   def process_all_images
     Notification.notify('Process Started')

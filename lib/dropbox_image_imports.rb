@@ -5,17 +5,15 @@ class DropboxImageImports
   require 'dropbox_image_imports/crunch' 
 
   def initialize(path, token)
-    @path = path
-    @token = token
+    Source.new(path,token)
   end
   
   def update_all_products
-    Crunch.process_all_images(@path,@token)
+    Crunch.process_all_images
   end
 
  def update_missing_products
-   Crunch.process_missing_images(@path,@token)
+   Crunch.process_missing_images
  end
-
 
 end
