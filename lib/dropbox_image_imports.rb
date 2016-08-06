@@ -19,7 +19,7 @@ class DropboxImageImports
  end
 
  def reorder_images
-   DropboxImageImports::Image.reorder
+   DropboxImageImports::Image.reorder_images
  end
 
 end
