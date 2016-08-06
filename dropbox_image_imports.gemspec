@@ -3,7 +3,7 @@ lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |spec|
-  spec.name          = "image_imports"
+  spec.name          = "dropbox_image_imports"
   spec.version       = '0.0.2'
   spec.authors       = ["Jonny Dalgleish"]
   spec.email         = ["fighella@gmail.com"]
