@@ -1,4 +1,10 @@
+require_dependency 'dropbox_image_imports/product' 
+require_dependency 'dropbox_image_imports/import' 
+require_dependency 'dropbox_image_imports/notification' 
+require_dependency 'dropbox_image_imports/crunch' 
+
 class DropboxImageImports
+  
   def initialize(path, token)
     @path = path
     @token = token
