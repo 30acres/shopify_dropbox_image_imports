@@ -11,8 +11,7 @@ class DropboxImageImports::Crunch < DropboxImageImports::Source
   end
 
   def self.process_missing_images(src)
-    @source = src
-    process_all_images ## Same for now
+    process_all_images(src) ## Same for now
   end
 
   def self.process_all
