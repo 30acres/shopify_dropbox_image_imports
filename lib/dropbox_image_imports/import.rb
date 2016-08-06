@@ -25,7 +25,6 @@ class DropboxImageImports::Import < DropboxImageImports::Source
   def has_dropbox_images
     if dropbox_images.any? 
       if dropbox_images.count != @product.images.count
-        binding.pry
         puts "Images Updated (#{@product.title})"
         DropboxImageImports::Notification.notify "Updated : #{@product.title}"
         match = true
