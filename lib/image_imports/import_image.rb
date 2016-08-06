@@ -133,6 +133,7 @@ class ImportImage
       intended_position = img.src.split('-').last.split('.').first.gsub(/[^0-9,.]/,'').to_i + 1
       if intended_position != img.position
         img.position = intented_position
+        @notifier.ping "Image Import :: Reordered Images #{@product.title}"
         img.save!
       end
     end
