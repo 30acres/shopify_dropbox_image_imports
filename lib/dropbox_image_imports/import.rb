@@ -92,7 +92,10 @@ class DropboxImageImports::Import < DropboxImageImports::Source
   end
 
   def reorder_images
+    #reload the product and check on the images
+    puts 'Rerororoeder'
     @product = ShopifyAPI::Product.find(@product.id)
+    puts @product.inspect
     @product.images.each do |img|
       puts @product.title
       intended_position = img.src.split('-').last.split('.').first.gsub(/[^0-9,.]/,'').to_i + 1
