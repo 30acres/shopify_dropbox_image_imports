@@ -25,6 +25,7 @@ class DropboxImageImports::Import < DropboxImageImports::Source
   def has_dropbox_images
     if dropbox_images.any? 
       if dropbox_images.count != @product.images.count
+        binding.pry
         puts "Images Updated (#{@product.title})"
         DropboxImageImports::Notification.notify "Updated : #{@product.title}"
         match = true
@@ -63,8 +64,8 @@ class DropboxImageImports::Import < DropboxImageImports::Source
           intended_position = url.split('-').last.split('.').first.gsub(/[^0-9,.]/,'').to_i + 1
           image = ShopifyAPI::Image.new(product_id: @product.id, src: url, position: intended_position)
           tagged = 'image-processed'
-          if ShopifyAPI.credit_left <= 39
-            puts 'Snoozed'
+          if ShopifyAPI.credit_left <= 2
+            puts 'Snoozin'
             sleep(20)
           end
           image.save!

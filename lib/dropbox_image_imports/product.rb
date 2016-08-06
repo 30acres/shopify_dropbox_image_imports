@@ -37,8 +37,8 @@ class DropboxImageImports::Product
           if intended_position != img.position
             img.position = intended_position
             changed_images << img.src
-            if ShopifyAPI.credit_left <= 39
-              puts 'Snoozed'
+            if ShopifyAPI.credit_left <= 2
+              puts 'API Limit Reached - Quick Snooze'
               sleep(20)
             end
           end
