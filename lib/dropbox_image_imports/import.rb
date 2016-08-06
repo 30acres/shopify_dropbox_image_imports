@@ -76,31 +76,24 @@ class DropboxImageImports::Import < DropboxImageImports::Source
           failed << url
         end
       end
-    end
+      update_image_tags(tagged)
+      reorder_images
 
-    if ShopifyAPI.credit_used >= 38
-      puts 'WOAH! Slow down abuser.'
-      DropboxImageImports::Notification.notify("Hit API Limit :: Having a 20 second nap")
-      sleep(20)
-      DropboxImageImports::Notification.notify("Nap done.")
+      if ShopifyAPI.credit_used >= 38
+        puts 'WOAH! Slow down abuser.'
+        DropboxImageImports::Notification.notify("Hit API Limit :: Having a 20 second nap")
+        sleep(20)
+        DropboxImageImports::Notification.notify("Nap done.")
+      end
     end
-
-    update_image_tags(tagged)
-    reorder_images
 
     DropboxImageImports::Notification.notify("Import Complete")
   end
 
   def reorder_images
     #reload the product and check on the images
-    puts 'Rerororoeder'
     @product = ShopifyAPI::Product.find(@product.id)
-    puts @product.inspect
     @product.images.each do |img|
-      puts @product.title
-      intended_position = img.src.split('-').last.split('.').first.gsub(/[^0-9,.]/,'').to_i + 1
-      puts intended_position
-      puts img.position
       if intended_position != img.position
         img.position = intented_position
         DropboxImageImports::Notification.notify("Reordered: #{@product.title}")
