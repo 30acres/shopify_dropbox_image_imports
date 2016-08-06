@@ -1,8 +1,6 @@
 require 'net/http'
 require 'dropbox_sdk'
-require "product/product"
 require "fastimage"
-require 'slack-notifier'
 
 class DropboxImageImports::Crunch
 
