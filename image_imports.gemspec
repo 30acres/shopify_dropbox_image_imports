@@ -5,7 +5,7 @@ require 'image_imports/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "image_imports"
-  spec.version       = ImageImports::VERSION
+  spec.version       = '0.0.2'
   spec.authors       = ["Jonny Dalgleish"]
   spec.email         = ["fighella@gmail.com"]
 

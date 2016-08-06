@@ -4,7 +4,7 @@ require "product/product"
 require "fastimage"
 require 'slack-notifier'
 
-class ImportImage
+class DropboxImageImports::Import
   def initialize(product,path,token)
     @product = product
     @path = path

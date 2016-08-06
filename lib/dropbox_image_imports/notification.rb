@@ -1,6 +1,6 @@
 require 'slack-notifier'
 
-class Notification
+class DropboxImageImports::Notification
   def initialize(message, type = :update)
     @type = type
     @message = message
