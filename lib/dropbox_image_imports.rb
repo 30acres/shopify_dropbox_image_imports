@@ -1,7 +1,7 @@
-require_dependency 'dropbox_image_imports/product' 
-require_dependency 'dropbox_image_imports/import' 
-require_dependency 'dropbox_image_imports/notification' 
-require_dependency 'dropbox_image_imports/crunch' 
+require 'dropbox_image_imports/product' 
+require 'dropbox_image_imports/import' 
+require 'dropbox_image_imports/notification' 
+require 'dropbox_image_imports/crunch' 
 
 class DropboxImageImports
   
