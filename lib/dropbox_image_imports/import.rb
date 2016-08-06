@@ -99,9 +99,9 @@ class DropboxImageImports::Import < DropboxImageImports::Source
       if intended_position != img.position
         img.position = intented_position
         DropboxImageImports::Notification.notify("Reordered: #{@product.title}")
-        img.save!
       end
     end
+    @product.save!
   end
 
   def update_image_tags(tagged)
