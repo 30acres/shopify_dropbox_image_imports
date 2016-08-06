@@ -25,13 +25,13 @@ class DropboxImageImports::Import < DropboxImageImports::Source
     if dropbox_images.any? 
       if dropbox_images.count != @product.images.count
         puts "Images Updated (#{@product.title})"
-        Notification.notify "Updated : #{@product.title}"
+        DropboxImageImports::Notification.notify "Updated : #{@product.title}"
         match = true
       end
       match = false
     else
       puts "No matching image in Dropbox for added product: (#{@product.title} - #{@product.published_at})"
-      Notification.notify "No match : #{@product.title}"
+      DropboxImageImports::Notification.notify "No match : #{@product.title}"
       match = false
     end
     match
@@ -69,7 +69,7 @@ class DropboxImageImports::Import < DropboxImageImports::Source
           puts 'IMAGE TOO BIG!'
           tagged = 'image-failed'
           
-          Notification.notify("Failed: #{@product.title}\n Img: #{url}" ,:alert)
+          DropboxImageImports::Notification.notify("Failed: #{@product.title}\n Img: #{url}" ,:alert)
 
           failed << url
         end
@@ -78,15 +78,15 @@ class DropboxImageImports::Import < DropboxImageImports::Source
 
     if ShopifyAPI.credit_used >= 38
       puts 'WOAH! Slow down abuser.'
-      Notification.notify("Hit API Limit :: Having a 20 second nap")
+      DropboxImageImports::Notification.notify("Hit API Limit :: Having a 20 second nap")
       sleep(20)
-      Notification.notify("Nap done.")
+      DropboxImageImports::Notification.notify("Nap done.")
     end
 
     update_image_tags(tagged)
     reorder_images
 
-    Notification.notify("Import Complete")
+    DropboxImageImports::Notification.notify("Import Complete")
   end
 
   def reorder_images
@@ -94,7 +94,7 @@ class DropboxImageImports::Import < DropboxImageImports::Source
       intended_position = img.src.split('-').last.split('.').first.gsub(/[^0-9,.]/,'').to_i + 1
       if intended_position != img.position
         img.position = intented_position
-        Notification.notify("Reordered: #{@product.title}")
+        DropboxImageImports::Notification.notify("Reordered: #{@product.title}")
         img.save!
       end
     end

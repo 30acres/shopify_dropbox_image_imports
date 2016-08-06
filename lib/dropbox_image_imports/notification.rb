@@ -28,7 +28,7 @@ class DropboxImageImports::Notification
   end
   
   def self.notify(message, type=nil)
-    Notification.new(message, type).send_message
+    DropboxImageImports::Notification.new(message, type).send_message
   end
   
 
