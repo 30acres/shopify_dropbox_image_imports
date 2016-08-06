@@ -94,6 +94,8 @@ class DropboxImageImports::Import < DropboxImageImports::Source
     #reload the product and check on the images
     @product = ShopifyAPI::Product.find(@product.id)
     @product.images.each do |img|
+      puts 'GOT HERE'
+      binding.pry
       if intended_position != img.position
         img.position = intented_position
         DropboxImageImports::Notification.notify("Reordered: #{@product.title}")
