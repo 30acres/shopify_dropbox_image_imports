@@ -19,7 +19,7 @@ class DropboxImageImports
   end
 
  def update_missing_products
-    Crunch.process_missing_images(@path,@token)
+   Crunch.process_missing_images(@path,@token)
  end
 
 
