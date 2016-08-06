@@ -63,6 +63,7 @@ class DropboxImageImports::Import < DropboxImageImports::Source
           image = ShopifyAPI::Image.new(product_id: @product.id, src: url)
           tagged = 'image-processed'
           if ShopifyAPI.credit_left <= 39
+            puts 'Snoozed'
             sleep(20)
           end
           image.save!
@@ -92,7 +93,10 @@ class DropboxImageImports::Import < DropboxImageImports::Source
 
   def reorder_images
     @product.images.each do |img|
+      puts @product.title
       intended_position = img.src.split('-').last.split('.').first.gsub(/[^0-9,.]/,'').to_i + 1
+      puts intended_position
+      puts img.position
       if intended_position != img.position
         img.position = intented_position
         DropboxImageImports::Notification.notify("Reordered: #{@product.title}")
