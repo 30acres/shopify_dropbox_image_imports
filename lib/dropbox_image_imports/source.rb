@@ -11,4 +11,8 @@ class DropboxImageImports::Source
   def token
     @token
   end
+
+  def valid?
+    path and token
+  end
 end

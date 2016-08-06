@@ -5,8 +5,9 @@ require "fastimage"
 require 'slack-notifier'
 
 class DropboxImageImports::Import < DropboxImageImports::Source
-  def initialize(product)
+  def initialize(product,src)
     @product = product
+    @source = src
   end
 
   def update_images
@@ -39,7 +40,7 @@ class DropboxImageImports::Import < DropboxImageImports::Source
 
   def dropbox_images
     if @product.variants.any? and @product.variants.first.sku.length >= 5 ## Just to make sure its not an accident
-      paths = path.split(',')
+      paths = @source.path.split(',')
       images = []
       paths.each do |path|
         images = images + connect_to_source.metadata(path)['contents'].select { |image| image['path'].downcase.include?(@product.variants.first.sku.downcase + '-')   }

@@ -2,24 +2,24 @@ require 'net/http'
 require 'dropbox_sdk'
 require "fastimage"
 
-class DropboxImageImports::Crunch
-  include DropboxImageImports::Source 
-
-  def self.process_all_images
+class DropboxImageImports::Crunch < DropboxImageImports::Source
+  def self.process_all_images(src)
+    @source = src
     DropboxImageImports::Notification.notify('Process Started')
     process_all
     DropboxImageImports::Notification.notify('Process Finished')
   end
 
-  def self.process_missing_images
+  def self.process_missing_images(src)
+    @source = src
     process_all_images ## Same for now
   end
 
   def self.process_all
-    if path and token
+    if @source.valid?
       DropboxImageImports::Product.all_products_array.each do |page|
         page.each do |product|
-          DropboxImageImports::Import.new(product,path,token).update_images
+          DropboxImageImports::Import.new(product,@source).update_images
         end
       end
     end
