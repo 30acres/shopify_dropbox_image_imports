@@ -13,7 +13,7 @@ class Notification
 
   def channel
     if @type == :alert
-      '#product_data_feed'
+      '#data_alerts'
     else
       '#product_data_feed'
     end
