@@ -19,7 +19,7 @@ class DropboxImageImports::Import < DropboxImageImports::Source
   def connect_to_source
     # w = DropboxOAuth2FlowNoRedirect.new(APP_KEY, APP_SECRET) 
     # authorize_url = flow.start()
-    DropboxClient.new(token)
+    DropboxClient.new(@source.token)
   end
 
   def has_dropbox_images
