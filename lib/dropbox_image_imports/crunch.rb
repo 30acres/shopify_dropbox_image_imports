@@ -3,6 +3,12 @@ require 'dropbox_sdk'
 require "fastimage"
 
 class DropboxImageImports::Crunch  < DropboxImageImports::Source
+  require 'dropbox_image_imports/source' 
+  require 'dropbox_image_imports/product' 
+  require 'dropbox_image_imports/import' 
+  require 'dropbox_image_imports/notification' 
+  require 'dropbox_image_imports/crunch' 
+
 
   def self.process_all_images
     Notification.notify('Process Started')
