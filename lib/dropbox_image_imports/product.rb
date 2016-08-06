@@ -35,7 +35,7 @@ class DropboxImageImports::Product
         product.images.each do |img|
           intended_position = img.src.split('-').last.split('.').first.gsub(/[^0-9,.]/,'').to_i + 1
           if intended_position != img.position
-            img.position = intented_position
+            img.position = intended_position
             changed_images << img.src
             if ShopifyAPI.credit_left <= 39
               puts 'Snoozed'
