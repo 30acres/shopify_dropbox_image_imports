@@ -1,10 +1,9 @@
 require "image_imports/version"
 
-
-
 module ImageImports
   require "image_imports/product"
   require "image_imports/import_image"
+  require "image_imports/notification"
 
   def self.update_all_products(path=nil, token=nil)
     puts '----------------------------------------------------'

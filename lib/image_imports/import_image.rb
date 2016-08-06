@@ -3,6 +3,7 @@ require 'dropbox_sdk'
 require "product/product"
 require "fastimage"
 require 'slack-notifier'
+require 'notification'
 
 module ImageImports
   def self.process_all_images(path, token)
