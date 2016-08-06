@@ -1,4 +1,5 @@
 class DropboxImageImports
+  require 'dropbox_image_imports/source' 
   require 'dropbox_image_imports/product' 
   require 'dropbox_image_imports/import' 
   require 'dropbox_image_imports/notification' 
