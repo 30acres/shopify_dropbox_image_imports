@@ -15,19 +15,20 @@ module ImageImports
     end
   end
   def self.process_missing_images(path, token)
-    @notifier = Slack::Notifier.new ENV['SLACK_IMAGE_WEBHOOK'], channel: '#product_data_feed',
-      username: 'Image Notifier', icon_url: 'https://cdn.shopify.com/s/files/1/1290/9713/t/4/assets/favicon.png?3454692878987139175'
-    @notifier.ping "[Image Import] Process Started"
+    
+    Notification.notify('Process Started')
+    
     if path and token
       ImageImports::Product.all_products_array.each do |page|
         page.each_with_index do |product,index|
           puts "======== Processing Product: #{index + 1}: #{product.title} ============"
           ImportImage.new(product,path,token).update_images
-          puts "=========================================================="
+          puts "========================================================================"
         end
       end
     end
-    @notifier.ping "[Image Import] Process Finished"
+    
+    Notification.notify('Process Finished')
   end
 end
 
@@ -36,8 +37,6 @@ class ImportImage
     @product = product
     @path = path
     @token = token
-    @notifier = Slack::Notifier.new ENV['SLACK_IMAGE_WEBHOOK'], channel: '#product_data_feed',
-      username: 'Image Notifier', icon_url: 'https://cdn.shopify.com/s/files/1/1290/9713/t/4/assets/favicon.png?3454692878987139175'
   end
 
   def update_images
@@ -56,13 +55,13 @@ class ImportImage
     if dropbox_images.any? 
       if dropbox_images.count != @product.images.count
         puts "Images Updated (#{@product.title})"
-        @notifier.ping "Image Updated (#{@product.title})"
+        Notification.notify "Updated : #{@product.title}"
         match = true
       end
       match = false
     else
       puts "No matching image in Dropbox for added product: (#{@product.title} - #{@product.published_at})"
-      @notifier.ping "Image Import: No match (#{@product.title})"
+      Notification.notify "No match : #{@product.title}"
       match = false
     end
     match
@@ -87,14 +86,11 @@ class ImportImage
     tagged = 'image-checked'
     dropbox_images.each do |di|
       url = connect_to_source.media(di['path'])['url']
-      puts "========"
-      puts url
-      puts "========"
+      
       if url
         if FastImage.size(url) and FastImage.size(url).inject(:*) <= 19999999
           image = ShopifyAPI::Image.new(product_id: @product.id, src: url)
           tagged = 'image-processed'
-          # @notifier.ping "Image Import [#{tagged}]: #{@product.title}"
           if ShopifyAPI.credit_left <= 39
             sleep(20)
           end
@@ -102,9 +98,8 @@ class ImportImage
         else
           puts 'IMAGE TOO BIG!'
           tagged = 'image-failed'
-          @notifier = Slack::Notifier.new ENV['SLACK_IMAGE_WEBHOOK'], channel: '#data_alerts',
-      username: 'Data Notifier', icon_url: 'https://cdn.shopify.com/s/files/1/1290/9713/t/4/assets/favicon.png?3454692878987139175'
-          @notifier.ping "Image Import [FAILED]: #{@product.title}\n Img: #{url}"
+          
+          Notification.notify("Failed: #{@product.title}\n Img: #{url}" ,:alert)
 
           failed << url
         end
@@ -113,19 +108,15 @@ class ImportImage
 
     if ShopifyAPI.credit_used >= 38
       puts 'WOAH! Slow down abuser.'
-      @notifier.ping "Image Import API Limit :: Snoozing for 20 seconds"
+      Notification.notify("Hit API Limit :: Having a 20 second nap")
       sleep(20)
+      Notification.notify("Nap done.")
     end
-    update_image_tags(tagged)
 
+    update_image_tags(tagged)
     reorder_images
 
-    puts '----------------------'
-    puts failed
-    puts '--- FAILED SO FAR ----'
-    puts failed.count
-    @notifier.ping "Image Import Complete :: #{failed.count} Failed"
-    puts '----------------------'
+    Notification.notify("Import Complete")
   end
 
   def reorder_images
@@ -133,7 +124,7 @@ class ImportImage
       intended_position = img.src.split('-').last.split('.').first.gsub(/[^0-9,.]/,'').to_i + 1
       if intended_position != img.position
         img.position = intented_position
-        @notifier.ping "Image Import :: Reordered Images #{@product.title}"
+        Notification.notify("Reordered: #{@product.title}")
         img.save!
       end
     end
