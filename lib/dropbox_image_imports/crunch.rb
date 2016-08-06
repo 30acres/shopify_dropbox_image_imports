@@ -4,7 +4,7 @@ require "product/product"
 require "fastimage"
 require 'slack-notifier'
 
-class DropboxImageImports::Process
+class DropboxImageImports::Crunch
 
   def initialize(path,token)
     @path = path
@@ -12,13 +12,13 @@ class DropboxImageImports::Process
   end
 
   def process_all_images
-    process_all
-  end
-
-  def process_missing_images
     Notification.notify('Process Started')
     process_all
     Notification.notify('Process Finished')
+  end
+
+  def process_missing_images
+    process_all_images ## Same for now
   end
 
   def process_all
