@@ -15,7 +15,8 @@ class DropboxImageImports::Product
   end
 
   def self.pages
-    count/limit + 2
+    byebug
+    (count/limit) + 1
   end
 
   def self.limit
