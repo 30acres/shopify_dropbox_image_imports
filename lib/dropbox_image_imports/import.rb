@@ -25,11 +25,11 @@ class DropboxImageImports::Import < DropboxImageImports::Source
   def has_dropbox_images
     if dropbox_images.any? 
       match = false
-      if dropbox_images.count != @product.images.count
+      # if dropbox_images.count != @product.images.count
         puts "Images Updated (#{@product.title})"
         DropboxImageImports::Notification.notify "Updated : #{@product.title}"
         match = true
-      end
+      # end
     else
       puts "No matching image in Dropbox for added product: (#{@product.title} - #{@product.published_at})"
       DropboxImageImports::Notification.notify "No match : #{@product.title}"
