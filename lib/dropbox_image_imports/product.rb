@@ -29,7 +29,7 @@ class DropboxImageImports::Product
   def self.reorder_images
     #reload the product and check on the images
     DropboxImageImports::Notification.notify("Image Order Check")
-    self.all_products_array.reverse.each do |page|
+    self.all_products_array.each do |page|
       page.each do |product|
         changed_images = []
         product.images.each do |img|

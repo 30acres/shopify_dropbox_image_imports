@@ -16,7 +16,7 @@ class DropboxImageImports::Crunch < DropboxImageImports::Source
 
   def self.process_all
     if @source.valid?
-      DropboxImageImports::Product.all_products_array.each do |page|
+      DropboxImageImports::Product.all_products_array.reverse.each do |page|
         page.each do |product|
           DropboxImageImports::Import.new(product,@source).update_images
         end
