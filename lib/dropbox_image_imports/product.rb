@@ -15,8 +15,11 @@ class DropboxImageImports::Product
   end
 
   def self.pages
-    byebug
-    (count/limit) + 1
+    puts "Count #{count}"
+    puts "Limit #{limit}"
+    puts "Count/Limit #{count/limit}"
+    puts "Count/Limit + 1 #{count/limit + 1}"
+    count/limit + 1
   end
 
   def self.limit
