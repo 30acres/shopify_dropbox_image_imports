@@ -24,12 +24,12 @@ class DropboxImageImports::Import < DropboxImageImports::Source
 
   def has_dropbox_images
     if dropbox_images.any? 
-      if dropbox_images.count != @product.images.count
+      # if dropbox_images.count != @product.images.count
         puts "Images Updated (#{@product.title})"
         DropboxImageImports::Notification.notify "Updated : #{@product.title}"
         match = true
-      end
-      match = false
+      # end
+      # match = false
     else
       puts "No matching image in Dropbox for added product: (#{@product.title} - #{@product.published_at})"
       DropboxImageImports::Notification.notify "No match : #{@product.title}"
@@ -65,6 +65,7 @@ class DropboxImageImports::Import < DropboxImageImports::Source
           tagged = 'image-processed'
           if ShopifyAPI.credit_left <= 2
             puts 'Snoozin'
+            DropboxImageImports::Notification.notify("Over Capacity" ,:alert)
             sleep(20)
           end
           image.save!
