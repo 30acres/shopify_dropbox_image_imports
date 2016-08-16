@@ -59,7 +59,7 @@ class DropboxImageImports::Import < DropboxImageImports::Source
       url = connect_to_source.media(di['path'])['url']
       modified = connect_to_source.metadata(di['path'])['modified']
       if url
-        if FastImage.size(url) and FastImage.size(url).inject(:*) <= 19999999
+        if FastImage.size(url) and !FastImage.size(url).nil? and FastImage.size(url).count >= 1 and FastImage.size(url).inject(:*) <= 19999999
           product = ShopifyAPI::Product.find(@product.id)
           intended_position = url.split('-').last.split('.').first.gsub(/[^0-9,.]/,'').to_i + 1
           metafields = [
