@@ -124,8 +124,11 @@ class DropboxImageImports::Import < DropboxImageImports::Source
       puts "PIM"
       puts pim
       if (!dim or !pim) or (dim and pim and dim > pim)
+        DropboxImageImports::Notification.notify("New Image Found #{@product.title}")
         puts "Changed = true"
         changed = true
+      else 
+        puts "Changed = false"
       end
       changed
     end
