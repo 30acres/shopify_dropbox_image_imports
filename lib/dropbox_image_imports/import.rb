@@ -113,11 +113,7 @@ class DropboxImageImports::Import < DropboxImageImports::Source
   end
 
   def changed_images?
-    binding.pry
-    dropbox_images.each do |di|
-      url = connect_to_source.media(di['path'])['url']
-      modified = connect_to_source.metadata(di['path'])['modified']
-    end
-    # @product.images 
+    # binding.pry
+    # dropbox_images.map { |di| di["modified"].to_time.to_i }.sort { |x, y| x.to_i <=> y.to_i }.last
   end
 end
