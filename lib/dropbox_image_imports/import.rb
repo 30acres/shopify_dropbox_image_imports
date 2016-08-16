@@ -25,11 +25,11 @@ class DropboxImageImports::Import < DropboxImageImports::Source
   def has_dropbox_images
     if dropbox_images.any? 
       match = false
-      # if dropbox_images.count != @product.images.count
+      if dropbox_images.count != @product.images.count or changed_images
         puts "Images Updated (#{@product.title})"
         DropboxImageImports::Notification.notify "Updated : #{@product.title}"
         match = true
-      # end
+      end
     else
       puts "No matching image in Dropbox for added product: (#{@product.title} - #{@product.published_at})"
       DropboxImageImports::Notification.notify "No match : #{@product.title}"
@@ -57,11 +57,20 @@ class DropboxImageImports::Import < DropboxImageImports::Source
     tagged = 'image-checked'
     dropbox_images.each do |di|
       url = connect_to_source.media(di['path'])['url']
-      binding.pry 
+      modified = connect_to_source.metadata(di['path'])['modified']
       if url
         if FastImage.size(url) and FastImage.size(url).inject(:*) <= 19999999
+          product = ShopifyAPI::Product.find(@product.id)
           intended_position = url.split('-').last.split('.').first.gsub(/[^0-9,.]/,'').to_i + 1
-          image = ShopifyAPI::Image.new(product_id: @product.id, src: url, position: intended_position)
+          metafields = [
+            {
+              "key": "dropbox_modified",
+              "value": modified,
+              "value_type": "string",
+              "namespace": "global"
+            }
+          ]
+          image = ShopifyAPI::Image.new(product_id: @product.id, src: url, position: intended_position, metafields: metafields)
           tagged = 'image-processed'
           if ShopifyAPI.credit_left <= 2
             puts 'Snoozin'
@@ -101,5 +110,14 @@ class DropboxImageImports::Import < DropboxImageImports::Source
     ## this will delete your images!
     @product.images = []
     @product.save!
+  end
+
+  def changed_images?
+    binding.pry
+    dropbox_images.each do |di|
+      url = connect_to_source.media(di['path'])['url']
+      modified = connect_to_source.metadata(di['path'])['modified']
+    end
+    # @product.images 
   end
 end
