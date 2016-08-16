@@ -115,12 +115,19 @@ class DropboxImageImports::Import < DropboxImageImports::Source
   def changed_images?
     # binding.pry
     changed = false
+    puts 'Checking for Changes'
     if @product.images and dropbox_images
       dim = dropbox_images.map { |di| di["modified"].to_time.to_i }.sort { |x, y| x.to_i <=> y.to_i }.last
+      puts 'DIM'
+      puts dim
       pim = @product.images.map { |pi| ShopifyAPI::Metafield.find(:first,:params=>{:resource => "product_images", :resource_id => pi.id } ).value.to_time.to_i if ShopifyAPI::Metafield.find(:first,:params=>{:resource => "product_images", :resource_id => pi.id} )  }.sort { |x, y| x.to_i <=> y.to_i }.last
-      if dim and pim and dim > pim
+      puts "PIM"
+      puts pim
+      if (!dim or !pim) or (dim and pim and dim > pim)
+        puts "Changed = true"
         changed = true
       end
+      changed
     end
     changed
   end
