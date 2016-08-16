@@ -43,7 +43,6 @@ class DropboxImageImports::Import < DropboxImageImports::Source
       paths = @source.path.split(',')
       images = []
       paths.each do |path|
-        binding.pry
         images = images + connect_to_source.metadata(path)['contents'].select { |image| image['path'] if image['path'].downcase.include?(@product.variants.first.sku.downcase + '-')   }
       end
       images
@@ -58,7 +57,7 @@ class DropboxImageImports::Import < DropboxImageImports::Source
     tagged = 'image-checked'
     dropbox_images.each do |di|
       url = connect_to_source.media(di['path'])['url']
-      
+      binding.pry 
       if url
         if FastImage.size(url) and FastImage.size(url).inject(:*) <= 19999999
           intended_position = url.split('-').last.split('.').first.gsub(/[^0-9,.]/,'').to_i + 1
