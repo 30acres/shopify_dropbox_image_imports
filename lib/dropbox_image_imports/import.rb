@@ -96,7 +96,7 @@ class DropboxImageImports::Import < DropboxImageImports::Source
       end
     end
 
-    DropboxImageImports::Notification.notify("Import Complete")
+    DropboxImageImports::Notification.notify("#{@product.title} Import Complete")
   end
 
   def update_image_tags(tagged)
