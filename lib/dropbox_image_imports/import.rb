@@ -32,7 +32,7 @@ class DropboxImageImports::Import < DropboxImageImports::Source
       end
     else
       puts "No matching image in Dropbox for added product: (#{@product.title} - #{@product.published_at})"
-      DropboxImageImports::Notification.notify "No match : #{@product.title}"
+      DropboxImageImports::Notification.notify "No match : #{@product.title} (#{@product.published_at ? @product.published_at : 'Not Published'})"
       match = false
     end
     match
@@ -114,6 +114,14 @@ class DropboxImageImports::Import < DropboxImageImports::Source
 
   def changed_images?
     # binding.pry
-    # dropbox_images.map { |di| di["modified"].to_time.to_i }.sort { |x, y| x.to_i <=> y.to_i }.last
+    changed = false
+    if @product.images and dropbox_images
+      dim = dropbox_images.map { |di| di["modified"].to_time.to_i }.sort { |x, y| x.to_i <=> y.to_i }.last
+      pim = @product.images.map { |pi| ShopifyAPI::Metafield.find(:first,:params=>{:resource => "product_images", :resource_id => pi.id } ).value.to_time.to_i if ShopifyAPI::Metafield.find(:first,:params=>{:resource => "product_images", :resource_id => pi.id} )  }.sort { |x, y| x.to_i <=> y.to_i }.last
+      if dim > pim
+        changed = true
+      end
+    end
+    changed
   end
 end
