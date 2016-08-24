@@ -117,14 +117,14 @@ class DropboxImageImports::Import < DropboxImageImports::Source
     changed = false
     puts 'Checking for Changes'
     if @product.images and dropbox_images
-      dim = dropbox_images.map { |di| di["modified"].to_time.to_i }.sort { |x, y| x.to_i <=> y.to_i }.last
+      dim = dropbox_images.map { |di| di["modified"].to_time.to_i }.sort { |x, y| x.to_i <=> y.to_i }
       puts 'DIM'
       puts dim
-      pim = @product.images.map { |pi| ShopifyAPI::Metafield.find(:first,:params=>{:resource => "product_images", :resource_id => pi.id } ).value.to_time.to_i if ShopifyAPI::Metafield.find(:first,:params=>{:resource => "product_images", :resource_id => pi.id} )  }.sort { |x, y| x.to_i <=> y.to_i }.last
+      pim = @product.images.map { |pi| ShopifyAPI::Metafield.find(:first,:params=>{:resource => "product_images", :resource_id => pi.id } ).value.to_time.to_i if ShopifyAPI::Metafield.find(:first,:params=>{:resource => "product_images", :resource_id => pi.id} )  }.sort { |x, y| x.to_i <=> y.to_i }
       puts "PIM"
       puts pim
-      binding.pry
-      if (!dim or !pim) or (dim and pim and dim > pim)
+      # binding.pry
+      if (!dim or !pim) or (dim and pim and dim.uniq.sort == pim.uniq.sort)
         DropboxImageImports::Notification.notify("New Image Found #{@product.title}")
         puts "Changed = true"
         changed = true
