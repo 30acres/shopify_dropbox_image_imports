@@ -16,7 +16,7 @@ class DropboxImageImports::Crunch < DropboxImageImports::Source
 
   def self.process_all
     if @source.valid?
-      DropboxImageImports::Product.all_products_array.reverse.each do |page|
+      DropboxImageImports::Product.all_products_array.each do |page|
         page.each do |product|
           DropboxImageImports::Import.new(product,@source).update_images
         end
@@ -24,6 +24,22 @@ class DropboxImageImports::Crunch < DropboxImageImports::Source
     end
   end
 
+  def self.process_one_product(src,product_id=nil)
+    @source = src
+    DropboxImageImports::Notification.notify("Process Started : #{product_id}")
+    process_one(product_id)
+    DropboxImageImports::Notification.notify("Process Finished : #{product_id}")
+  end
+
+  def self.process_one(product_id)
+    if @source.valid?
+      DropboxImageImports::Product.one_product_by_id(product_id).each do |page|
+        page.each do |product|
+          DropboxImageImports::Import.new(product,@source).update_images
+        end
+      end
+    end
+  end
 
 end
 
