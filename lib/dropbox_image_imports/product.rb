@@ -10,9 +10,7 @@ class DropboxImageImports::Product
   end
 
   def self.one_product_by_id(product_id)
-    p_arr = []
-    p_arr << [ShopifyAPI::Product.find(product_id)]
-    p_arr
+    ShopifyAPI::Product.find(product_id)
   end
 
   def self.recent_products_array

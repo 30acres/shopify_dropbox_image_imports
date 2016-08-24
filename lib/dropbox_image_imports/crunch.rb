@@ -33,7 +33,7 @@ class DropboxImageImports::Crunch < DropboxImageImports::Source
 
   def self.process_one(product_id)
     if @source.valid?
-        DropboxImageImports::Import.new(DropboxImageImports::Product.one_product_by_id(product_id),@source).update_images
+      DropboxImageImports::Import.new(DropboxImageImports::Product.one_product_by_id(product_id),@source).update_images
     end
   end
 
