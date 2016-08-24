@@ -13,6 +13,12 @@ class DropboxImageImports
     Crunch.process_all_images(@source)
   end
 
+  def update_one_product(product_id=nil)
+    Crunch.process_one_product(@source,product_id)
+  end
+
+
+
  def update_missing_products
    Crunch.process_missing_images(@source)
  end
