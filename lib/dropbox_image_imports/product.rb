@@ -11,7 +11,7 @@ class DropboxImageImports::Product
 
   def self.one_product_by_id(product_id)
     p_arr = []
-    p_arr << ShopifyAPI::Product.find(product_id)
+    p_arr << [ShopifyAPI::Product.find(product_id)]
     p_arr
   end
 
