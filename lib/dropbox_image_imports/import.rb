@@ -123,6 +123,7 @@ class DropboxImageImports::Import < DropboxImageImports::Source
       pim = @product.images.map { |pi| ShopifyAPI::Metafield.find(:first,:params=>{:resource => "product_images", :resource_id => pi.id } ).value.to_time.to_i if ShopifyAPI::Metafield.find(:first,:params=>{:resource => "product_images", :resource_id => pi.id} )  }.sort { |x, y| x.to_i <=> y.to_i }.last
       puts "PIM"
       puts pim
+      binding.pry
       if (!dim or !pim) or (dim and pim and dim > pim)
         DropboxImageImports::Notification.notify("New Image Found #{@product.title}")
         puts "Changed = true"
