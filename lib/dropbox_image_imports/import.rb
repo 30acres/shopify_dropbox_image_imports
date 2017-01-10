@@ -124,16 +124,12 @@ class DropboxImageImports::Import < DropboxImageImports::Source
       puts "PIM"
       puts pim
       # binding.pry
-      begin 
-      if (!dim or !pim) or (dim and pim and dim.uniq.sort != pim.uniq.sort)
+        if (!dim or !pim) or (dim and pim and dim.compact.uniq.sort != pim.compact.uniq.sort)
         DropboxImageImports::Notification.notify("New Image Found #{@product.title}")
         puts "Changed = true"
         changed = true
       else 
         puts "Changed = false"
-      end
-      rescue
-        binding.pry
       end
       changed
     end
