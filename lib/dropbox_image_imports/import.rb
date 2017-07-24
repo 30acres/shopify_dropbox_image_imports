@@ -39,6 +39,7 @@ class DropboxImageImports::Import < DropboxImageImports::Source
   end
 
   def dropbox_images
+    binding.pry
     if @product.variants.any? and @product.variants.first.sku.length >= 5 ## Just to make sure its not an accident
       paths = @source.path.split(',')
       images = []
