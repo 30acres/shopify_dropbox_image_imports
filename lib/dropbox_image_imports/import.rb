@@ -44,7 +44,7 @@ class DropboxImageImports::Import < DropboxImageImports::Source
       paths = @source.path.split(',')
       images = []
       paths.each do |path|
-        # binding.pry
+        binding.pry
         images = images + connect_to_source.metadata(path)['contents'].select { |image| image['path'] if image['path'].downcase.include?(@product.title.downcase.gsub(' ','') + '-')   }
         # images = images + connect_to_source.metadata(path)['contents'].select { |image| image['path'] if image['path'].downcase.include?(@product.variants.first.sku.downcase)   }
       end
