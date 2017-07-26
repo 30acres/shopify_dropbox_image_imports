@@ -58,6 +58,21 @@ class DropboxImageImports::Import < DropboxImageImports::Source
     end
   end
 
+  def fast_image(url)
+    tries ||= 3
+    FastImage.size(url).count
+    rescue NoMethodError => e
+      puts 'Retrying...'
+      retry unless (tries -= 1).zero?
+    else
+      FastImage.size(url)
+    end
+  end
+
+  def is_fast?(url)
+    fast_image(url) and fast_image(url).present? and fast_image(url).count >= 1 and fast_image(url).inject(:*) <= 19999999
+  end
+
   def upload_images
     remove_all_images if dropbox_images.any?
     failed = []
@@ -68,9 +83,9 @@ class DropboxImageImports::Import < DropboxImageImports::Source
       if url
         # binding.pry
         puts "url: #{url}"
-        puts "FastImage: #{FastImage.size(url)}"
+        puts "FastImage: #{fast_image(url)}"
 
-        if FastImage.size(url) and !FastImage.size(url).nil? and FastImage.size(url).count >= 1 and FastImage.size(url).inject(:*) <= 19999999
+        if is_fast?(url) 
           product = ShopifyAPI::Product.find(@product.id)
           intended_position = url.split('-').last.split('.').first.gsub(/[^0-9,.]/,'').to_i + 1
           metafields = [
