@@ -90,7 +90,7 @@ class DropboxImageImports::Import < DropboxImageImports::Source
           end
           image.save!
         else
-          binding.pry
+          ##binding.pry
           puts 'IMAGE TOO BIG!'
           tagged = 'image-failed'
           
