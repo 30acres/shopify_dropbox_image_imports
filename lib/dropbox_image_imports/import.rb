@@ -59,6 +59,7 @@ class DropboxImageImports::Import < DropboxImageImports::Source
   end
 
   def fast_image(url)
+    begin
     tries ||= 3
     FastImage.size(url).count
     rescue NoMethodError => e
