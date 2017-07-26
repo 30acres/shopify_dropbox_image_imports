@@ -25,6 +25,7 @@ class DropboxImageImports::Import < DropboxImageImports::Source
   def has_dropbox_images
     if dropbox_images.any? 
       match = false
+      puts "Product Images: #{@product.images.to_s}"
       if dropbox_images.count != @product.images.count or changed_images?
         puts "Images Updated (#{@product.title})"
         DropboxImageImports::Notification.notify "Updated : #{@product.title}"
@@ -66,6 +67,9 @@ class DropboxImageImports::Import < DropboxImageImports::Source
       modified = connect_to_source.metadata(di['path'])['modified']
       if url
         # binding.pry
+        puts "url: #{url}"
+        puts "FastImage: #{FastImage.size(url)}"
+
         if FastImage.size(url) and !FastImage.size(url).nil? and FastImage.size(url).count >= 1 and FastImage.size(url).inject(:*) <= 19999999
           product = ShopifyAPI::Product.find(@product.id)
           intended_position = url.split('-').last.split('.').first.gsub(/[^0-9,.]/,'').to_i + 1
