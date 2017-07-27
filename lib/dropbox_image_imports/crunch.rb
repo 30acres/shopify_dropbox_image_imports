@@ -6,9 +6,9 @@ class DropboxImageImports::Crunch < DropboxImageImports::Source
   def self.process_all_images(src,slack)
     @source = src
     @slack = slack
-    DropboxImageImports::Notification.notify('Process Started',slack)
+    DropboxImageImports::Notification.notify('Process Started',:update, slack)
     process_all
-    DropboxImageImports::Notification.notify('Process Finished',slack)
+    DropboxImageImports::Notification.notify('Process Finished',:update, slack)
   end
 
   def self.process_missing_images(src,slack)
@@ -25,11 +25,11 @@ class DropboxImageImports::Crunch < DropboxImageImports::Source
     end
   end
 
-  def self.process_one_product(src,product_id=nil)
+  def self.process_one_product(src,product_id=nil, slack=nil)
     @source = src
-    DropboxImageImports::Notification.notify("Process Started : #{product_id}")
+    DropboxImageImports::Notification.notify("Process Started : #{product_id}", :update, @slack)
     process_one(product_id)
-    DropboxImageImports::Notification.notify("Process Finished : #{product_id}")
+    DropboxImageImports::Notification.notify("Process Finished : #{product_id}", :update, @slack)
   end
 
   def self.process_one(product_id)

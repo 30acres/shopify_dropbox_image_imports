@@ -30,8 +30,8 @@ class DropboxImageImports::Notification
     "[Image Import] #{@message}"
   end
   
-  def self.notify(message, type=nil)
-    DropboxImageImports::Notification.new(message, type).send_message
+  def self.notify(message, type=nil, slack=nil)
+    DropboxImageImports::Notification.new(message, type, slack).send_message
   end
   
 
