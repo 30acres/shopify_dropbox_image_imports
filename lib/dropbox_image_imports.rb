@@ -9,6 +9,10 @@ class DropboxImageImports
     @source = Source.new(path,token)
     @slack = slack
   end
+
+  def slack
+    @slack
+  end
   
   def update_all_products
     Crunch.process_all_images(@source)

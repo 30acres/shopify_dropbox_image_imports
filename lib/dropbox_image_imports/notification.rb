@@ -7,7 +7,7 @@ class DropboxImageImports::Notification
   end
 
   def notifier
-    Slack::Notifier.new @slack, channel: channel,
+    Slack::Notifier.new slack, channel: channel,
       username: 'Image Notifier'
   end
 
