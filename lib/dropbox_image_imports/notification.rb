@@ -23,7 +23,7 @@ class DropboxImageImports::Notification
   end
 
   def send_message
-    notifier.ping(formatted_message)
+    notifier.ping(formatted_message) if @slack
   end
 
   def formatted_message
