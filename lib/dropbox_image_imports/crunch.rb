@@ -3,22 +3,23 @@ require 'dropbox_sdk'
 require "fastimage"
 
 class DropboxImageImports::Crunch < DropboxImageImports::Source
-  def self.process_all_images(src)
+  def self.process_all_images(src,slack)
     @source = src
-    DropboxImageImports::Notification.notify('Process Started')
+    @slack = slack
+    DropboxImageImports::Notification.notify('Process Started',slack)
     process_all
-    DropboxImageImports::Notification.notify('Process Finished')
+    DropboxImageImports::Notification.notify('Process Finished',slack)
   end
 
-  def self.process_missing_images(src)
-    process_all_images(src) ## Same for now
+  def self.process_missing_images(src,slack)
+    process_all_images(src,slack) ## Same for now
   end
 
   def self.process_all
     if @source.valid?
       DropboxImageImports::Product.all_products_array.each do |page|
         page.each do |product|
-          DropboxImageImports::Import.new(product,@source).update_images
+          DropboxImageImports::Import.new(product,@source,@slack).update_images
         end
       end
     end

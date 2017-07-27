@@ -1,14 +1,17 @@
 require 'slack-notifier'
 
 class DropboxImageImports::Notification
-  def initialize(message, type = :update)
+  def initialize(message, type = :update, slack=nil)
     @type = type
     @message = message
+    @slack = slack
   end
 
   def notifier
-    Slack::Notifier.new slack, channel: channel,
-      username: 'Image Notifier'
+    if slack
+      Slack::Notifier.new slack, channel: channel,
+        username: 'Image Notifier'
+    end
   end
 
   def channel

@@ -5,9 +5,10 @@ require "fastimage"
 require 'slack-notifier'
 
 class DropboxImageImports::Import < DropboxImageImports::Source
-  def initialize(product,src)
+  def initialize(product,src,slack)
     @product = product
     @source = src
+    @slack = slack
   end
 
   def update_images

@@ -10,22 +10,18 @@ class DropboxImageImports
     @slack = slack
   end
 
-  def slack
-    @slack
-  end
-  
   def update_all_products
-    Crunch.process_all_images(@source)
+    Crunch.process_all_images(@source, @slack)
   end
 
   def update_one_product(product_id=nil)
-    Crunch.process_one_product(@source,product_id)
+    Crunch.process_one_product(@source,product_id,@slack)
   end
 
 
 
  def update_missing_products
-   Crunch.process_missing_images(@source)
+   Crunch.process_missing_images(@source,@slack)
  end
 
  def reorder_images
