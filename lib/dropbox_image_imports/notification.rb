@@ -7,8 +7,8 @@ class DropboxImageImports::Notification
   end
 
   def notifier
-    Slack::Notifier.new ENV['SLACK_IMAGE_WEBHOOK'], channel: channel,
-      username: 'Image Notifier', icon_url: 'https://cdn.shopify.com/s/files/1/1290/9713/t/4/assets/favicon.png?3454692878987139175'
+    Slack::Notifier.new @slack, channel: channel,
+      username: 'Image Notifier'
   end
 
   def channel

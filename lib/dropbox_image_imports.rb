@@ -5,8 +5,9 @@ class DropboxImageImports
   require 'dropbox_image_imports/notification' 
   require 'dropbox_image_imports/crunch' 
 
-  def initialize(path, token)
+  def initialize(path, token, slack=nil)
     @source = Source.new(path,token)
+    @slack = slack
   end
   
   def update_all_products
