@@ -27,6 +27,7 @@ class DropboxImageImports::Crunch < DropboxImageImports::Source
 
   def self.process_one_product(src,product_id=nil, slack=nil)
     @source = src
+    @slack = slack
     DropboxImageImports::Notification.notify("Process Started : #{product_id}", :update, @slack)
     process_one(product_id)
     DropboxImageImports::Notification.notify("Process Finished : #{product_id}", :update, @slack)
