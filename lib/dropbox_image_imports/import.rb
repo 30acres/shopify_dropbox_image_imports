@@ -110,8 +110,7 @@ class DropboxImageImports::Import < DropboxImageImports::Source
           ##binding.pry
           puts 'IMAGE TOO BIG!'
           tagged = 'image-failed'
-          
-          DropboxImageImports::Notification.notify("Failed: #{@product.title}\n Img: #{url}" ,:alert, @slack)
+          DropboxImageImports::Notification.new("Failed (TOO BIG?): #{@product.title}\n Img: #{url}" ,:alert, @slack).send_message
 
           failed << url
         end
