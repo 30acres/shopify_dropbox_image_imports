@@ -110,7 +110,7 @@ class DropboxImageImports::Import < DropboxImageImports::Source
           ##binding.pry
           puts 'IMAGE TOO BIG!'
           tagged = 'image-failed'
-          DropboxImageImports::Notification.new("*#{@product.title}*\n Import Failed (Image Too Big [#{fast_image(url)}])\n Img: #{url.split('/').last}" ,:alert, Shop.where(dropbox_path: 'I.AM.GIA BULK IMAGE UPLOADS').last.slack_webhook_url).send_message
+          DropboxImageImports::Notification.new("*#{@product.title}*\n Img: #{url.split('/').last} \n Import Failed (Image Too Big [#{fast_image(url)}])" ,:alert, Shop.where(dropbox_path: 'I.AM.GIA BULK IMAGE UPLOADS').last.slack_webhook_url).send_message
 
           failed << url
         end
