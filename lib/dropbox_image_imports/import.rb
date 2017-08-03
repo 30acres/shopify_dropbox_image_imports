@@ -29,12 +29,12 @@ class DropboxImageImports::Import < DropboxImageImports::Source
       puts "Product Images: #{@product.images.to_s}"
       if dropbox_images.count != @product.images.count or changed_images?
         puts "Images Updated (#{@product.title})"
-        DropboxImageImports::Notification.notify "Updated : #{@product.title}", :update, @slack
+        # DropboxImageImports::Notification.notify "Updated : #{@product.title}", :update, @slack
         match = true
       end
     else
       puts "No matching image in Dropbox for added product: (#{@product.title} - #{@product.published_at})"
-      DropboxImageImports::Notification.notify "No match : #{@product.title} (#{@product.published_at ? @product.published_at : 'Not Published'})", :update, @slack
+      # DropboxImageImports::Notification.notify "No match : #{@product.title} (#{@product.published_at ? @product.published_at : 'Not Published'})", :update, Shop.where(dropbox_path: 'I.AM.GIA BULK IMAGE UPLOADS').last
       match = false
     end
     match
@@ -102,7 +102,7 @@ class DropboxImageImports::Import < DropboxImageImports::Source
           tagged = 'image-processed'
           if ShopifyAPI.credit_left <= 2
             puts 'Snoozin'
-            DropboxImageImports::Notification.notify("Over Capacity" ,:alert, @slack)
+            # DropboxImageImports::Notification.notify("Over Capacity" ,:alert, Shop.where(dropbox_path: 'I.AM.GIA BULK IMAGE UPLOADS').last.slack_webhook_url)
             sleep(20)
           end
           image.save!
@@ -110,7 +110,7 @@ class DropboxImageImports::Import < DropboxImageImports::Source
           ##binding.pry
           puts 'IMAGE TOO BIG!'
           tagged = 'image-failed'
-          DropboxImageImports::Notification.new("Failed (TOO BIG?): #{@product.title}\n Img: #{url}" ,:alert, @slack).send_message
+          DropboxImageImports::Notification.new("Failed (TOO BIG?): #{@product.title}\n Img: #{url}" ,:alert, Shop.where(dropbox_path: 'I.AM.GIA BULK IMAGE UPLOADS').last.slack_webhook_url).send_message
 
           failed << url
         end
@@ -118,13 +118,13 @@ class DropboxImageImports::Import < DropboxImageImports::Source
 
       if ShopifyAPI.credit_used >= 38
         puts 'WOAH! Slow down speedy.'
-        DropboxImageImports::Notification.notify("Hit API Limit :: Having a 20 second nap", :alert, @slack)
+        # DropboxImageImports::Notification.notify("Hit API Limit :: Having a 20 second nap", :alert, @slack)
         sleep(20)
-        DropboxImageImports::Notification.notify("Nap done.", :alert, @slack)
+        # DropboxImageImports::Notification.notify("Nap done.", :alert, @slack)
       end
     end
 
-    DropboxImageImports::Notification.notify("#{@product.title} Import Complete", :update, @slack)
+    DropboxImageImports::Notification.new("Import Completed", nil, Shop.where(dropbox_path: 'I.AM.GIA BULK IMAGE UPLOADS').last.slack_webhook_url).send_message
   end
 
   def update_image_tags(tagged)
@@ -153,7 +153,7 @@ class DropboxImageImports::Import < DropboxImageImports::Source
       puts pim
       # binding.pry
         if (!dim or !pim) or (dim and pim and dim.compact.uniq.sort != pim.compact.uniq.sort)
-        DropboxImageImports::Notification.notify("New Image Found #{@product.title}", :update, @slack)
+        # DropboxImageImports::Notification.notify("New Image Found #{@product.title}", :update, @slack)
         puts "Changed = true"
         changed = true
       else 
